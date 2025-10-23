@@ -1,0 +1,24 @@
+# Auto-docs output
+.docs/
+*.log
+
+# Dependencies
+node_modules/
+vendor/
+venv/
+
+# Build outputs
+build/
+dist/
+target/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# State files
+.watcher-state
