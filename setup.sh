@@ -104,6 +104,38 @@ case "$RUNTIME" in
 esac
 
 echo ""
+echo "🔨 Configuring build script for $RUNTIME..."
+
+# Update package.json build script based on runtime
+case "$RUNTIME" in
+    bun)
+        # Use jq or sed to update package.json
+        if command -v jq &> /dev/null; then
+            jq '.scripts.build = "bun build src/extension.ts --outdir dist --target node"' package.json > package.json.tmp && mv package.json.tmp package.json
+        else
+            # Fallback: manual string replacement
+            sed -i.bak 's/"build": ".*"/"build": "bun build src\/extension.ts --outdir dist --target node"/' package.json
+        fi
+        ;;
+    deno)
+        if command -v jq &> /dev/null; then
+            jq '.scripts.build = "deno bundle src/extension.ts dist/extension.js"' package.json > package.json.tmp && mv package.json.tmp package.json
+        else
+            sed -i.bak 's/"build": ".*"/"build": "deno bundle src\/extension.ts dist\/extension.js"/' package.json
+        fi
+        ;;
+    node)
+        if command -v jq &> /dev/null; then
+            jq '.scripts.build = "npx esbuild src/extension.ts --bundle --platform=node --outfile=dist/extension.js"' package.json > package.json.tmp && mv package.json.tmp package.json
+        else
+            sed -i.bak 's/"build": ".*"/"build": "npx esbuild src\/extension.ts --bundle --platform=node --outfile=dist\/extension.js"/' package.json
+        fi
+        ;;
+esac
+
+echo "✅ Build script configured!"
+
+echo ""
 echo "🔨 Building extension..."
 
 # Build based on runtime
@@ -114,9 +146,9 @@ case "$RUNTIME" in
         ;;
     deno)
         deno task build 2>/dev/null || {
-            echo "ℹ️  No build task defined for Deno"
-            echo "   Extension will be compiled on first run"
-            BUILD_STATUS=0
+            echo "ℹ️  Running build directly..."
+            deno bundle src/extension.ts dist/extension.js
+            BUILD_STATUS=$?
         }
         ;;
     node)
