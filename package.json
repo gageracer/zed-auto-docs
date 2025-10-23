@@ -1,0 +1,1 @@
+{"name":"zed-auto-docs","version":"0.1.0","description":"Automatic documentation generation with AI for Zed","repository":"https://github.com/gageracer/zed-auto-docs","main":"src/extension.ts","scripts":{"build":"bun build src/extension.ts --outdir dist --target node","dev":"bun build src/extension.ts --outdir dist --target node --watch"},"devDependencies":{"bun-types":"latest"}}
