@@ -1,1 +1,18 @@
-{"name":"zed-auto-docs","version":"0.1.0","description":"Automatic documentation generation with AI for Zed","repository":"https://github.com/gageracer/zed-auto-docs","main":"src/extension.ts","scripts":{"build":"bun build src/extension.ts --outdir dist --target node","dev":"bun build src/extension.ts --outdir dist --target node --watch"},"devDependencies":{"bun-types":"latest"}}
+{
+  "name": "zed-auto-docs",
+  "version": "0.1.0",
+  "description": "Automatic documentation generation with AI for Zed",
+  "repository": "https://github.com/gageracer/zed-auto-docs",
+  "main": "src/extension.ts",
+  "scripts": {
+    "build": "node build.js",
+    "build:bun": "bun build src/extension.ts --outdir dist --target node",
+    "build:deno": "deno bundle src/extension.ts dist/extension.js",
+    "build:node": "esbuild src/extension.ts --bundle --platform=node --outfile=dist/extension.js",
+    "dev": "node build.js --watch"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "esbuild": "^0.19.0"
+  }
+}
