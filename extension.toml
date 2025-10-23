@@ -1,0 +1,5 @@
+name = "Auto Docs"
+version = "0.1.0"
+description = "Automatic documentation generation with AI"
+schema_version = 1
+authors = ["gageracer"]
