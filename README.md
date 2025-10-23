@@ -1,228 +1,150 @@
 # 🎮 Zed Auto-Docs
 
-**Automatic documentation generation for your code in Zed Editor**
-
-This Zed extension automatically analyzes your code and generates documentation as you work. It uses a 15-second cooldown system to batch changes and creates AI-powered prompts for Zed's Assistant.
-
----
+Automatic documentation generation for your code using Zed's built-in AI assistant.
 
 ## ✨ Features
 
-- 🔍 **Smart File Watching** - Monitors file saves with 15-second cooldown
-- 📝 **Auto Documentation** - Generates README.md in each component folder
-- 🤖 **AI Prompt Generation** - Creates prompts for Zed Assistant in `.docs/prompts/`
-- 📊 **Progress Tracking** - Maintains a progress tracker in `.docs/PROGRESS.md`
-- 🎨 **Tailwind Detection** - Extracts and documents Tailwind CSS classes
-- 🌐 **Multi-Language** - Supports JS, TS, JSX, TSX, Python, Go, Rust, Java, Svelte
+- 🤖 **Uses Zed's Native AI** - Works with whatever AI model you have configured (GPT-4, Claude, etc.)
+- 💰 **No API Costs** - Uses your existing Zed AI subscription
+- 🔧 **Simple Slash Command** - Just type `/document filename` in Zed Assistant
+- 📝 **Smart Prompts** - Analyzes your code and creates comprehensive documentation requests
+- 🎯 **Multi-Language** - Supports TypeScript, JavaScript, Svelte, Python, Rust, Go, Java, and more
 
 ---
 
 ## 🚀 Installation
 
 ### Prerequisites
-- [Zed Editor](https://zed.dev) installed
-- [Bun](https://bun.sh) runtime installed
-- Git
 
-### Step 1: Clone & Build
+1. **Rust** (for building the extension):
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   ```
+
+2. **Zed Editor** with AI configured:
+   - Make sure you have Zed's AI assistant set up
+   - Configure your preferred model in Zed settings
+
+### Install Extension
 
 ```bash
+# Clone the repository
 git clone https://github.com/gageracer/zed-auto-docs.git
 cd zed-auto-docs
-./setup.sh
-```
 
-### Step 2: Install in Zed
+# Build the extension
+./build.sh
 
-**Option A: Dev Extension (Recommended for testing)**
-1. Open Zed
-2. Press `cmd-shift-x` (or `ctrl-shift-x` on Linux)
-3. Click "Install Dev Extension"
-4. Select the `zed-auto-docs` directory
-
-**Option B: Manual Link**
-```bash
-ln -s $(pwd) ~/.config/zed/extensions/auto-docs
+# Install in Zed
+# 1. Open Zed
+# 2. Press cmd-shift-x (Extensions)
+# 3. Click "Install Dev Extension"
+# 4. Select the zed-auto-docs directory
 ```
 
 ---
 
-## 📖 How It Works
+## 📖 Usage
 
-### Automatic Mode
-1. **Save a file** - Extension tracks the change
-2. **15-second cooldown** - Batches multiple saves together
-3. **Analysis runs** - Extracts functions, classes, imports, Tailwind classes
-4. **Generates docs** - Creates/updates README.md in the file's directory
-5. **Creates AI prompt** - Saves prompt in `.docs/prompts/[filename].prompt.md`
+### Step 1: Open Zed Assistant
+Press `cmd-'` to open the Assistant panel
 
-### Enhanced with Zed Assistant
-1. Check `.docs/prompts/` for generated prompts
-2. Open a prompt file in Zed
-3. Press `cmd-'` to open Zed Assistant
-4. The prompt is pre-filled with your code analysis
-5. Get comprehensive AI-generated documentation
-6. Copy the response into your component's README.md
-
----
-
-## 🎯 Supported File Types
-
-| Language | Extensions |
-|----------|------------|
-| JavaScript | `.js`, `.jsx` |
-| TypeScript | `.ts`, `.tsx` |
-| Python | `.py` |
-| Go | `.go` |
-| Rust | `.rs` |
-| Java | `.java` |
-| Svelte | `.svelte` |
-
----
-
-## 📁 Generated Files
-
+### Step 2: Use the `/document` command
 ```
-your-project/
-├── .docs/
-│   ├── PROGRESS.md          # Overall progress tracker
-│   └── prompts/
-│       ├── Component.svelte.prompt.md
-│       ├── utils.ts.prompt.md
-│       └── ...
-├── src/
-│   ├── components/
-│   │   ├── Component.svelte
-│   │   └── README.md        # Auto-generated docs
-│   └── utils/
-│       ├── helper.ts
-│       └── README.md        # Auto-generated docs
+/document src/components/GameHeader.svelte
 ```
 
+### Step 3: AI Generates Documentation
+Zed's AI (using your configured model) will:
+- Read your file
+- Analyze the code structure
+- Generate comprehensive documentation
+
+### Step 4: Save the Documentation
+Copy the AI-generated documentation to your component's README.md
+
 ---
 
-## ⚙️ Configuration
+## 🎯 Example
 
-### Cooldown Period
-Default: 15 seconds
-
-To change, edit `src/extension.ts`:
-```typescript
-private readonly COOLDOWN_MS = 15000; // milliseconds
+**Input:**
+```
+/document src/lib/components/game/GameHeader.svelte
 ```
 
-### Excluded Directories
-By default, these directories are ignored:
-- `node_modules`
-- `.git`
-- `vendor`
-- `build`
-- `dist`
-- `.docs`
+**AI Output:**
+```markdown
+# GameHeader Component
 
----
+## Purpose & Overview
+A Svelte component that displays the game header with score tracking...
 
-## 💡 Usage Tips
+## Key Components
+- `isPaused`: Boolean state for pause functionality
+- `formatTime`: Utility function for time display
+...
 
-### Basic Workflow
-1. Code normally in Zed
-2. Save your files (`cmd-s`)
-3. Extension automatically documents them
-4. Check `.docs/PROGRESS.md` for overview
+## Usage Example
+```svelte
+<script>
+  import GameHeader from './GameHeader.svelte';
+</script>
 
-### Advanced Workflow (with AI)
-1. Save your file
-2. Open `.docs/prompts/[your-file].prompt.md`
-3. Use Zed Assistant (`cmd-'`) with the prompt
-4. Get detailed AI-generated documentation
-5. Customize and add to your README
-
-### Manual Trigger
-Just save any supported file to trigger documentation update.
-
----
-
-## 📊 What Gets Analyzed
-
-- ✅ **Functions** - All function declarations and expressions
-- ✅ **Classes** - Class definitions and exports
-- ✅ **Imports** - Dependencies and module imports
-- ✅ **Tailwind Classes** - All `className` attributes
-- ✅ **File Structure** - Lines of code, complexity estimates
-
----
-
-## 🐛 Troubleshooting
-
-### Extension not activating?
-- Check Zed's extension logs: View → Extensions → Show Logs
-- Ensure Bun is installed: `bun --version`
-- Rebuild: `cd zed-auto-docs && bun run build`
-
-### Documentation not generating?
-- Verify file type is supported
-- Check cooldown period hasn't been exceeded
-- Look for errors in Zed's console
-
-### Prompts not appearing?
-- Ensure `.docs/prompts/` directory exists
-- Check file permissions
-- Try saving the file again
+<GameHeader />
+```
+```
 
 ---
 
 ## 🛠️ Development
 
-### Build
+### Build from Source
 ```bash
-bun run build
-```
-
-### Watch Mode
-```bash
-bun run dev
+cargo build --target wasm32-wasip1 --release
 ```
 
 ### Project Structure
 ```
 zed-auto-docs/
-├── extension.toml      # Zed extension config
-├── package.json        # Bun dependencies
-├── setup.sh           # Installation script
+├── extension.toml      # Extension metadata
+├── Cargo.toml         # Rust dependencies
 ├── src/
-│   └── extension.ts   # Main extension code
-└── README.md          # This file
+│   └── lib.rs        # Main extension code
+└── build.sh          # Build helper script
 ```
 
 ---
 
 ## 🤝 Contributing
 
-Contributions welcome! Feel free to:
-- Report bugs
-- Suggest features
+Contributions are welcome! Feel free to:
+- Open issues for bugs or feature requests
 - Submit pull requests
+- Improve documentation
 
 ---
 
-## 📜 License
+## 📄 License
 
-MIT License - feel free to use in your projects!
-
----
-
-## 🎉 Credits
-
-Built for the Zed Editor community by [@gageracer](https://github.com/gageracer)
+MIT License - see LICENSE file for details
 
 ---
 
 ## 🔗 Links
 
-- [Zed Editor](https://zed.dev)
-- [Bun Runtime](https://bun.sh)
-- [Report Issues](https://github.com/gageracer/zed-auto-docs/issues)
+- **Repository:** https://github.com/gageracer/zed-auto-docs
+- **Zed Editor:** https://zed.dev
+- **Extension API Docs:** https://zed.dev/docs/extensions
 
 ---
 
-**Happy Coding! 🚀**
+## 💡 Tips
+
+- Use relative paths from your project root: `/document src/components/Button.tsx`
+- The extension works with any AI model configured in Zed
+- Generated documentation can be edited and customized as needed
+- Works great with Tailwind CSS projects - detects styling patterns
+
+---
+
+**Built with ❤️ for the Zed community**

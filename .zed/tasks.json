@@ -1,1 +1,0 @@
-{"tasks":[{"label":"Update Documentation","command":"bash","args":[".zed/scripts/auto-document.sh"],"use_new_terminal":false},{"label":"Start Smart Watcher","command":"bash","args":[".zed/scripts/smart-watcher.sh"],"use_new_terminal":true},{"label":"Stop Smart Watcher","command":"pkill","args":["-f","smart-watcher.sh"],"use_new_terminal":false}]}
